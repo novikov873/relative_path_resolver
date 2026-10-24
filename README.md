@@ -26,3 +26,10 @@ except DifferentRootError:
 - Both arguments are treated as directories. There is no special handling for file paths.
 - Paths are normalized before comparison, so `/a/./b` and `/a/b` are equivalent, and trailing slashes are ignored.
 - Relative paths (no leading separator) are considered to share a relative root; `relative_path('a/b', 'a/c')` returns `'../c'`.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
